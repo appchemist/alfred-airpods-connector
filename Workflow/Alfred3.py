@@ -13,6 +13,14 @@ Python 3 required!
 """
 
 
+def custom_sort_key(item):
+    # I want my AirPods Pro to always be on top
+    if "Pro" in item["title"]:
+        return 0
+    else:
+        return 1
+
+
 class Items(object):
     """
     Alfred WF Items object to generate Script Filter object
@@ -104,10 +112,17 @@ class Items(object):
             raise ValueError(f"Type must be in: {valid_keys}")
         the_items = dict()
         the_items.update({"items": self.items})
+        the_items['skipknowledge'] = True
+        sys.stderr.write(f"{the_items}")
         if response_type == "dict":
             return the_items
         elif response_type == "json":
             return json.dumps(the_items, default=str, indent=4)
+    
+
+    def sortItems(self):
+        self.items = sorted(self.items, key=custom_sort_key)
+
 
     def setIcon(self, m_path: str, m_type: str = "") -> None:
         """
@@ -120,6 +135,7 @@ class Items(object):
             m_type (str, optional): "icon"|"fileicon". Defaults to "".
         """
         self.setKv("icon", self.__define_icon(m_path, m_type))
+
 
     def __define_icon(self, path: str, m_type: str = "") -> dict:
         """
@@ -140,6 +156,7 @@ class Items(object):
             icon.update({"type": m_type})
         icon.update({"path": path})
         return icon
+
 
     def addMod(
         self,
