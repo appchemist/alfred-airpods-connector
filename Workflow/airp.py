@@ -90,15 +90,14 @@ def main():
                 wf.setItem(
                     title=ap_name,
                     subtitle=f"{ap_name} are {con_str}",
-                    arg=f"{adr};{con_switch}",
-                    # uid=adr
+                    arg=f"{adr};{con_switch}"
                 )
                 wf.setIcon(ico, "image")
                 wf.addItem()
     else:
         wf.setItem(
-            title="The workflow requires BLUEUTIL",
-            subtitle="Press ENTER to let Alfred resolve dependencies...",
+            title="The workflow requires ‘blueutil’",
+            subtitle="Press ↵ to let Alfred resolve dependencies...",
             valid=True,
             arg="blueutil"
         )
