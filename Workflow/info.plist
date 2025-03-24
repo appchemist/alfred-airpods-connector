@@ -59,24 +59,11 @@
 				<false/>
 			</dict>
 		</array>
-		<key>68335AC4-11CC-4C78-9624-B31BE4964076</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>BEF5B755-FC76-40F2-80D8-C43DF31C872D</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
 		<key>C54D2F8B-5CED-4BE4-B705-2BEA07203C3F</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>68335AC4-11CC-4C78-9624-B31BE4964076</string>
+				<string>BEF5B755-FC76-40F2-80D8-C43DF31C872D</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -129,11 +116,11 @@
 				<key>focusedappvariablename</key>
 				<string></string>
 				<key>hotkey</key>
-				<integer>35</integer>
+				<integer>0</integer>
 				<key>hotmod</key>
-				<integer>1310720</integer>
+				<integer>0</integer>
 				<key>hotstring</key>
-				<string>P</string>
+				<string></string>
 				<key>leftcursor</key>
 				<false/>
 				<key>modsmode</key>
@@ -164,7 +151,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
-				<string>pods</string>
+				<string>{var:main_keyword}</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -176,7 +163,7 @@
 				<key>runningsubtext</key>
 				<string></string>
 				<key>script</key>
-				<string>./py3.sh airp.py "$1"</string>
+				<string>./py3.sh list_airpods.py "$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -255,23 +242,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argument</key>
-				<string>{var:split1}</string>
-				<key>passthroughargument</key>
-				<false/>
-				<key>variables</key>
-				<dict/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.argument</string>
-			<key>uid</key>
-			<string>68335AC4-11CC-4C78-9624-B31BE4964076</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>delimiter</key>
 				<string>;</string>
 				<key>discardemptyarguments</key>
@@ -281,7 +251,7 @@
 				<key>trimarguments</key>
 				<true/>
 				<key>variableprefix</key>
-				<string>split</string>
+				<string>address_or_state</string>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.utility.split</string>
@@ -316,13 +286,6 @@
 			<key>ypos</key>
 			<real>215</real>
 		</dict>
-		<key>68335AC4-11CC-4C78-9624-B31BE4964076</key>
-		<dict>
-			<key>xpos</key>
-			<real>750</real>
-			<key>ypos</key>
-			<real>300</real>
-		</dict>
 		<key>6DBA99A0-095C-474D-9CCC-0BA378413D74</key>
 		<dict>
 			<key>xpos</key>
@@ -333,22 +296,65 @@
 		<key>BEF5B755-FC76-40F2-80D8-C43DF31C872D</key>
 		<dict>
 			<key>xpos</key>
-			<real>910</real>
+			<real>815</real>
 			<key>ypos</key>
-			<real>270</real>
+			<real>305</real>
 		</dict>
 		<key>C54D2F8B-5CED-4BE4-B705-2BEA07203C3F</key>
 		<dict>
 			<key>xpos</key>
 			<real>645</real>
 			<key>ypos</key>
-			<real>300</real>
+			<real>335</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
-	<array/>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>airpods</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Main Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>main_keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Favorite Device</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>favorite_device</string>
+		</dict>
+	</array>
 	<key>version</key>
-	<string>2025.1</string>
+	<string>2025.2</string>
 	<key>webaddress</key>
 	<string>https://github.com/April-June-August/alfred-airpods-connector</string>
 </dict>

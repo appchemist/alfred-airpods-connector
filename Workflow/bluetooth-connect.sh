@@ -1,17 +1,16 @@
 #!/usr/bin/env zsh
-# open bluetooth settings if blueutil is not installed
-if ! command -v blueutil &>/dev/null; then
-	open "x-apple.systempreferences:com.apple.BluetoothSettings"
-	return 0
-fi
 
-# toggle via `blueutil`
 export PATH=/usr/local/lib:/usr/local/bin:/opt/homebrew/bin/:$PATH
-address="$*"
-if [[ $(blueutil --is-connected "$address") -eq 0 ]]; then
-	blueutil --connect "$address"
-	echo "Connecting to $address"
+address="${address_or_state1}"
+state="${address_or_state2}"
+
+if [[ $state -eq 0 ]]; then
+    blueutil --connect "$address"
+    echo "Connecting to $address"
+elif [[ $state -eq 1 ]]; then
+    blueutil --disconnect "$address"
+    echo "Disconnecting from $address"
 else
-	blueutil --disconnect "$address"
-	echo "Disconnecting to $address"
+    echo "Invalid state: $state (must be 0 or 1)"
+    exit 1
 fi

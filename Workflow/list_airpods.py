@@ -74,9 +74,19 @@ def is_tool_installed(tool_name):
     except FileNotFoundError:
         return False
 
+def custom_sort_key(key: str):
+    def sort_key(item, key=key) -> int:
+        # Keep a device always on top
+        if key in item["title"]:
+            return 0
+        else:
+            return 1
+    return sort_key
+
 
 def main():
     query = Tools.getArgv(1)
+    favorite_device = Tools.getEnv("favorite_device")
     wf = Items()
     if is_tool_installed("blueutil"):
         for ap_name, status in get_paired_airpods().items():
@@ -85,7 +95,7 @@ def main():
             is_connected: bool = True if status.get('connected') == 'Yes' else False
             con_str: str = "connected, Press \u23CE to disconnect..." if is_connected else "NOT connected, \u23CE to connect..."
             ico: str = f"icons_for_earphpones/{ap_type}.png" if is_connected else f"icons_for_earphpones/{ap_type} Case.png"
-            con_switch: str = "connected" if is_connected else "disconnected"
+            con_switch: str = "1" if is_connected else "0"
             if query == "" or query.lower() in ap_name.lower():
                 wf.setItem(
                     title=f"{ap_name} {'✅️' if is_connected else '🚫'}",
@@ -103,7 +113,9 @@ def main():
         )
         wf.addItem()
 
-    wf.sortItems()
+    if favorite_device:
+        wf.sortItems(key_function=custom_sort_key(key=favorite_device))
+        
     wf.write()
 
 

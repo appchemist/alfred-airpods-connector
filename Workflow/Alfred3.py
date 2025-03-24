@@ -13,14 +13,6 @@ Python 3 required!
 """
 
 
-def custom_sort_key(item):
-    # I want my AirPods Pro to always be on top
-    if "Pro" in item["title"]:
-        return 0
-    else:
-        return 1
-
-
 class Items(object):
     """
     Alfred WF Items object to generate Script Filter object
@@ -120,8 +112,8 @@ class Items(object):
             return json.dumps(the_items, default=str, indent=4)
     
 
-    def sortItems(self):
-        self.items = sorted(self.items, key=custom_sort_key)
+    def sortItems(self, key_function) -> None:
+        self.items = sorted(self.items, key=key_function)
 
 
     def setIcon(self, m_path: str, m_type: str = "") -> None:
