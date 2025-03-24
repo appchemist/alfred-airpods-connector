@@ -88,7 +88,7 @@ def main():
             con_switch: str = "connected" if is_connected else "disconnected"
             if query == "" or query.lower() in ap_name.lower():
                 wf.setItem(
-                    title=ap_name,
+                    title=f"{ap_name} {'✅️' if is_connected else '🚫'}",
                     subtitle=f"{ap_name} are {con_str}",
                     arg=f"{adr};{con_switch}"
                 )
