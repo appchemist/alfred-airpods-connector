@@ -104,8 +104,6 @@ class Items(object):
             raise ValueError(f"Type must be in: {valid_keys}")
         the_items = dict()
         the_items.update({"items": self.items})
-        the_items['skipknowledge'] = True
-        sys.stderr.write(f"{the_items}")
         if response_type == "dict":
             return the_items
         elif response_type == "json":
