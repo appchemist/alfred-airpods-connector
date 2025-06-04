@@ -3,8 +3,7 @@
 import json
 import os
 import subprocess
-
-from Alfred3 import Items, Tools
+import sys
 
 # [ProductID]:"[icon file base name]"
 AIRPD_PRODUCT_INDX = {
@@ -85,9 +84,10 @@ def custom_sort_key(key: str):
 
 
 def main():
-    query = Tools.getArgv(1)
-    favorite_device = Tools.getEnv("favorite_device")
-    wf = Items()
+    query = sys.argv[1] if len(sys.argv) > 1 else ""
+    favorite_device = os.getenv("favorite_device", "")
+    items = []
+    
     if is_tool_installed("blueutil"):
         for ap_name, status in get_paired_airpods().items():
             adr: str = status.get('address')
@@ -97,26 +97,33 @@ def main():
             ico: str = f"icons_for_earphones/{ap_type}.png" if is_connected else f"icons_for_earphones/{ap_type} Case.png"
             con_switch: str = "1" if is_connected else "0"
             if query == "" or query.lower() in ap_name.lower():
-                wf.setItem(
-                    title=f"{ap_name} {'✅️' if is_connected else '🚫'}",
-                    subtitle=f"{ap_name} are {con_str}",
-                    arg=f"{adr};{con_switch}"
-                )
-                wf.setIcon(ico, "image")
-                wf.addItem()
+                item = {
+                    "title": f"{ap_name} {'✅️' if is_connected else '🚫'}",
+                    "subtitle": f"{ap_name} are {con_str}",
+                    "arg": f"{adr};{con_switch}",
+                    "icon": {
+                        "path": ico,
+                        "type": "image"
+                    }
+                }
+                items.append(item)
     else:
-        wf.setItem(
-            title="The workflow requires ‘blueutil’",
-            subtitle="Press ↵ to let Alfred resolve dependencies...",
-            valid=True,
-            arg="blueutil"
-        )
-        wf.addItem()
+        item = {
+            "title": "The workflow requires ‘blueutil’",
+            "subtitle": "Press ↵ to let Alfred resolve dependencies...",
+            "valid": True,
+            "arg": "blueutil"
+        }
+        items.append(item)
 
     if favorite_device:
-        wf.sortItems(key_function=custom_sort_key(key=favorite_device))
-        
-    wf.write()
+        items = sorted(items, key=custom_sort_key(key=favorite_device))
+    
+    # Create the final output structure
+    output = {"rerun": 2, "items": items}
+    
+    # Write the JSON to stdout
+    sys.stdout.write(json.dumps(output))
 
 
 if __name__ == "__main__":
