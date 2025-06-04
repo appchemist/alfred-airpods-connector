@@ -94,7 +94,7 @@ def main():
             ap_type: str = status.get('prod_label')
             is_connected: bool = True if status.get('connected') == 'Yes' else False
             con_str: str = "connected, Press \u23CE to disconnect..." if is_connected else "NOT connected, \u23CE to connect..."
-            ico: str = f"icons_for_earphpones/{ap_type}.png" if is_connected else f"icons_for_earphpones/{ap_type} Case.png"
+            ico: str = f"icons_for_earphones/{ap_type}.png" if is_connected else f"icons_for_earphones/{ap_type} Case.png"
             con_switch: str = "1" if is_connected else "0"
             if query == "" or query.lower() in ap_name.lower():
                 wf.setItem(
