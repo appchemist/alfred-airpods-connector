@@ -3,20 +3,19 @@
 import json
 import os
 import subprocess
+import sys
 
-from Alfred3 import Items, Tools
-
-# [ProductID]:"[iconname]"
+# [ProductID]:"[icon file base name]"
 AIRPD_PRODUCT_INDX = {
-    8202: "airpodmax",
-    8206: "airpodpro",
-    8212: "airpodpro2",
-    8228: "airpodpro2",
-    8194: "airpod1",
-    8207: "airpod2",
-    8211: "airpod3",
-    8219: "airpod4",
-    8203: "powerbeatspro"
+    8194: "AirPods OG",
+    8207: "AirPods 2",
+    8211: "AirPods 3",
+    8219: "AirPods 4",
+    8202: "AirPods Max",
+    8206: "AirPods Pro",
+    8212: "AirPods Pro 2",
+    8228: "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    8203: "Powerbeats Pro",
 }
 
 
@@ -25,7 +24,7 @@ def get_paired_airpods() -> dict:
     Get paired AirPods including info
 
     Returns:
-        dict: dict with paired AirPod name including dict with info
+        dict: dict with paired AirPods name including dict with info
     """
     jsn: dict = json.loads(os.popen('system_profiler SPBluetoothDataType -json').read())
     bt_data: dict = jsn['SPBluetoothDataType'][0] if jsn else None
@@ -74,36 +73,57 @@ def is_tool_installed(tool_name):
     except FileNotFoundError:
         return False
 
+def custom_sort_key(key: str):
+    def sort_key(item, key=key) -> int:
+        # Keep a device always on top
+        if key in item["title"]:
+            return 0
+        else:
+            return 1
+    return sort_key
+
 
 def main():
-    query = Tools.getArgv(1)
-    wf = Items()
+    query = sys.argv[1] if len(sys.argv) > 1 else ""
+    favorite_device = os.getenv("favorite_device", "")
+    items = []
+    
     if is_tool_installed("blueutil"):
         for ap_name, status in get_paired_airpods().items():
             adr: str = status.get('address')
             ap_type: str = status.get('prod_label')
             is_connected: bool = True if status.get('connected') == 'Yes' else False
-            con_str: str = "connected, Press \u23CE to disconnect..." if is_connected else "NOT connected, \u23CE to connect..."
-            ico: str = f"{ap_type}.png" if is_connected else f"{ap_type}_case.png"
-            con_switch: str = "connected" if is_connected else "disconnected"
+            con_str: str = "\u23CE to disconnect." if is_connected else "\u23CE to connect."
+            ico: str = f"icons_for_earphones/{ap_type}.png" if is_connected else f"icons_for_earphones/{ap_type} Case.png"
+            con_switch: str = "1" if is_connected else "0"
             if query == "" or query.lower() in ap_name.lower():
-                wf.setItem(
-                    title=ap_name,
-                    subtitle=f"{ap_name} are {con_str}",
-                    arg=f"{adr};{con_switch}",
-                    uid=adr
-                )
-                wf.setIcon(ico, "image")
-                wf.addItem()
+                item = {
+                    "title": f"{ap_name} {'✅️' if is_connected else '🚫'}",
+                    "subtitle": f"{con_str}",
+                    "arg": f"{adr};{con_switch}",
+                    "icon": {
+                        "path": ico,
+                        "type": "image"
+                    }
+                }
+                items.append(item)
     else:
-        wf.setItem(
-            title="The workflow requires BLUEUTIL",
-            subtitle="Press ENTER to let Alfred resolve dependencies...",
-            valid=True,
-            arg="blueutil"
-        )
-        wf.addItem()
-    wf.write()
+        item = {
+            "title": "The workflow requires ‘blueutil’",
+            "subtitle": "Press ↵ to let Alfred resolve dependencies...",
+            "valid": True,
+            "arg": "blueutil"
+        }
+        items.append(item)
+
+    if favorite_device:
+        items = sorted(items, key=custom_sort_key(key=favorite_device))
+    
+    # Create the final output structure
+    output = {"rerun": 2, "items": items}
+    
+    # Write the JSON to stdout
+    sys.stdout.write(json.dumps(output))
 
 
 if __name__ == "__main__":
