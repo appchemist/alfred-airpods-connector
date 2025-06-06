@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.may-june-july.alterairpodsconnector</string>
+	<string>com.alfred.acidham.airpod</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
