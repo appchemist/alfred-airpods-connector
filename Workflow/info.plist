@@ -274,7 +274,10 @@ In the [Workflow’s Configuration](https://www.alfredapp.com/help/workflows/use
 
 ## Hotkeys
 
-Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/) for faster triggering.</string>
+Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/) for faster triggering.
+
+## Acknowledgments
+This workflow is originally created by [Acidham](https://github.com/Acidham). My thanks for their work and kindness for letting me take over.</string>
 	<key>uidata</key>
 	<dict>
 		<key>1DA679C0-54A9-49EC-A9E0-B01115A97781</key>
