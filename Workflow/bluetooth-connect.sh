@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-export PATH=/usr/local/lib:/usr/local/bin:/opt/homebrew/bin/:$PATH
 address="${address_or_state1}"
 state="${address_or_state2}"
 
