@@ -93,7 +93,7 @@ def main():
             adr: str = status.get('address')
             ap_type: str = status.get('prod_label')
             is_connected: bool = True if status.get('connected') == 'Yes' else False
-            con_str: str = "\u23CE to disconnect." if is_connected else "\u23CE to connect."
+            con_str: str = "↩ to disconnect." if is_connected else "↩ to connect."
             ico: str = f"icons_for_earphones/{ap_type}.png" if is_connected else f"icons_for_earphones/{ap_type} Case.png"
             con_switch: str = "1" if is_connected else "0"
             if query == "" or query.lower() in ap_name.lower():
@@ -110,7 +110,7 @@ def main():
     else:
         item = {
             "title": "The workflow requires ‘blueutil’",
-            "subtitle": "Press ↵ to let Alfred resolve dependencies...",
+            "subtitle": "Press ↩ to let Alfred resolve dependencies...",
             "valid": True,
             "arg": "blueutil"
         }
